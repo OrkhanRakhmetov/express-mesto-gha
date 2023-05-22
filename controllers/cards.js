@@ -42,7 +42,9 @@ module.exports.deleteCardById = (req, res) => {
         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+   
 };
+
 
 module.exports.likeCard = (req, res) => {
   const { cardId } = req.params;

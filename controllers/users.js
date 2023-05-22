@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const NotFoundError = require('../errors/NotFoundError');
+
 const {
   BAD_REQUEST,
   NOT_FOUND,
@@ -14,17 +14,20 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
-    .then((user) => {
-      user
-        ? res.send({ data: user })
-        : res.status(BAD_REQUEST).send({ message: 'Пользователь по указанному _id не найден' });
+    .orFail()
+    .then((user) => res.send({ data: user }))
+
+    .catch((err) => {
+      console.log(err)
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
+      }
+      if (err.name === 'CastError') {
+        return res.status(BAD_REQUEST).send({ message: 'Некорректный _id пользователя' });
+      }
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     }
     )
-    .catch((err) =>
-
-      console.log(err),
-
-      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.createUser = (req, res) => {

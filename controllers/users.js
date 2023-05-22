@@ -18,7 +18,6 @@ module.exports.getUserById = (req, res) => {
     .then((user) => res.send({ data: user }))
 
     .catch((err) => {
-      console.log(err)
       if (err.name === 'DocumentNotFoundError') {
         return res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
       }
@@ -51,7 +50,12 @@ module.exports.updateProfile = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      }
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+    });
 };
 
 module.exports.updateAvatar = (req, res) => {

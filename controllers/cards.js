@@ -31,42 +31,24 @@ module.exports.deleteCardById = (req, res) => {
   const { _id } = req.user;
 
   Card.findById(cardId)
+    .orFail()
     .then((card) => {
-      if (!card) {
-        return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
-      }
       if (card.owner.toString() !== _id) {
         return res.status(FORBIDDEN).send({ message: 'Нельзя удалять карточки' });
       }
       return Card.findByIdAndRemove(cardId)
         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
-
+    .catch((err) => {
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
+      }
+      if (err.name === 'CastError') {
+        return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
+      }
+      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+    })
 };
-
-// module.exports.deleteCardById = (req, res) => {
-//   const { cardId } = req.params;
-//   const { _id } = req.user;
-
-//   Card.findById(cardId)
-//     .orFail()
-//     .then(() => {
-//       Card.findByIdAndRemove(cardId)
-//         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
-//     })
-//     .catch(() => {
-//       if (err.name === 'DocumentNotFoundError') {
-//         return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
-//       }
-//       if (owner.toString() !== _id) {
-//         return res.status(FORBIDDEN).send({ message: 'Нельзя удалять карточку' });
-//       }
-//       return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-//     })
-
-// };
-
 
 module.exports.likeCard = (req, res) => {
   const { cardId } = req.params;
@@ -84,9 +66,8 @@ module.exports.likeCard = (req, res) => {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
       }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    }
-    )
-};
+    })
+  };
 
 module.exports.dislikeCard = (req, res) => {
   const { cardId } = req.params;

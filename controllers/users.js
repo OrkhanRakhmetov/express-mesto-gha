@@ -25,8 +25,7 @@ module.exports.getUserById = (req, res) => {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id пользователя' });
       }
       res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    }
-    )
+    })
 };
 
 module.exports.createUser = (req, res) => {

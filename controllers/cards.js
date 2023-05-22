@@ -78,7 +78,7 @@ module.exports.likeCard = (req, res) => {
     .then((card) => res.status(200).send({ data: card }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Карточки по указанному _id не найдена' });
+        return res.status(NOT_FOUND).send({ message: 'Карточка по указанному _id не найдена' });
       }
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
@@ -98,7 +98,7 @@ module.exports.dislikeCard = (req, res) => {
     .then((card) => res.status(200).send({ data: card }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        return res.status(NOT_FOUND).send({ message: 'Карточки по указанному _id не найдена' });
+        return res.status(NOT_FOUND).send({ message: 'Карточка по указанному _id не найдена' });
       }
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
@@ -108,17 +108,4 @@ module.exports.dislikeCard = (req, res) => {
     )
 };
 
-// module.exports.dislikeCard = (req, res) => {
-//   const { cardId } = req.params;
-//   const { _id } = req.user;
 
-//   Card.findByIdAndUpdate(cardId, { $pull: { likes: _id } }, { new: true })
-//     .populate(['owner', 'likes'])
-//     .then((card) => {
-//       if (!card) {
-//         return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
-//       }
-//       res.status(200).send({ data: card });
-//     })
-//     .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
-// };

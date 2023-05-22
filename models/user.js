@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
-  name: { // имя пользователя
-    type: String, // name — это строка
-    required: true, // оно должно быть у каждого пользователя, так что имя — обязательное поле
-    minlength: 2, // минимальная длина имени — 2 символа
-    maxlength: 30, // а максимальная — 30 символов
+  name: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 30,
   },
-  about: {//информация о пользователе
-    type: String, // about — это строка
-    required: true, // оно должно быть у каждого пользователя, так что имя — обязательное поле
-    minlength: 2, // минимальная длина строки информации — 2 символа
-    maxlength: 30, // а максимальная — 30 символов
+  about: {
+    type: String,
+    required: true, 
+    minlength: 2, 
+    maxlength: 30, 
   },
-  avatar: {//ссылка на аватарку
-    type: String,// avatar — это строка
-    required: true,// она должна быть у каждого пользователя, так что аватарнка — обязательное поле
-    validate: {// validator - функция проверки данных.
+  avatar: {
+    type: String,
+    required: true,
+    validate: {
       validator: (avatar) => validator.isURL(avatar),
-      message: 'Некорректный URL адрес',// когда validator вернёт false, будет использовано это сообщение
+      message: 'Некорректный URL адрес',
     },
   },
 }, { versionKey: false }

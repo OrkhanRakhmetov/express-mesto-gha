@@ -3,13 +3,13 @@ const User = require('../models/user');
 const {
   BAD_REQUEST,
   NOT_FOUND,
-  INTERNAL_SERVER_ERROR
+  INTERNAL_SERVER_ERROR,
 } = require('../utils/Constants');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((user) => res.send(user))
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
 
 module.exports.getUserById = (req, res) => {
@@ -24,8 +24,8 @@ module.exports.getUserById = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id пользователя' });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    })
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 module.exports.createUser = (req, res) => {
@@ -37,7 +37,7 @@ module.exports.createUser = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании пользователя' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -53,7 +53,7 @@ module.exports.updateProfile = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании пользователя' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -65,8 +65,5 @@ module.exports.updateAvatar = (req, res) => {
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
-
-
-

@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    required: true, 
-    minlength: 2, 
-    maxlength: 30, 
+    required: true,
+    minlength: 2,
+    maxlength: 30,
   },
   avatar: {
     type: String,
@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
       message: 'Некорректный URL адрес',
     },
   },
-}, { versionKey: false }
-)
+}, { versionKey: false });
 
 module.exports = mongoose.model('user', userSchema);

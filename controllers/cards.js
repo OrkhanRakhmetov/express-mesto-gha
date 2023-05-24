@@ -4,13 +4,13 @@ const {
   BAD_REQUEST,
   FORBIDDEN,
   NOT_FOUND,
-  INTERNAL_SERVER_ERROR
+  INTERNAL_SERVER_ERROR,
 } = require('../utils/Constants');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(200).send({ data: cards }))
-    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -22,7 +22,7 @@ module.exports.createCard = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании карточки' });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -46,8 +46,8 @@ module.exports.deleteCardById = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    })
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 module.exports.likeCard = (req, res) => {
@@ -65,9 +65,9 @@ module.exports.likeCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    })
-  };
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+    });
+};
 
 module.exports.dislikeCard = (req, res) => {
   const { cardId } = req.params;
@@ -84,9 +84,6 @@ module.exports.dislikeCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST).send({ message: 'Некорректный _id карточки' });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
-    }
-    )
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+    });
 };
-
-

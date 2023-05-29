@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const userRouter = require('./routes/users');
-const cardRouter = require('./routes/cards');
+const { errors } = require('celebrate');
+const cookieParser = require('cookie-parser');
+
+const router = require('./routes');
+const handlerError = require('./middlewares/error');
 
 const { PORT = 3000, DB_ADDRESS = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
@@ -12,16 +15,11 @@ mongoose.connect(DB_ADDRESS, {
 });
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6468d7b01a688cfdab3b438f',
-  };
+app.use(router);
 
-  next();
-});
+app.use(handlerError);
+app.use(errors());
 
-app.use('/', userRouter);
-app.use('/', cardRouter);
-app.use('*', (req, res) => res.status(404).send({ message: 'Такой страницы не существует' }));
 app.listen(PORT);

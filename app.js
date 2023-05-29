@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(router);
 
-app.use(handlerError);
 app.use(errors());
+app.use(handlerError);
 
 app.listen(PORT);

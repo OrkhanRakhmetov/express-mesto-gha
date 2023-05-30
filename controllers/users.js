@@ -43,11 +43,13 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с таким email уже есть в базе данных'));
-        return;
+        // return;
       }
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
-        return;
+        // next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+        // return;
+        const message = Object.values(err.errors).map((error) => error.message).join('; ');
+        next(new BadRequestError(message));
       }
       next(err);
     });

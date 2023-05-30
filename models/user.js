@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: 'https://img2.reactor.cc/pics/post/furry-%D1%84%D1%8D%D0%BD%D0%B4%D0%BE%D0%BC%D1%8B-furry-gif-furry-fox-2175640.gif',
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator: (avatar) => validator.isURL(avatar),
       message: 'Некорректный URL адрес',

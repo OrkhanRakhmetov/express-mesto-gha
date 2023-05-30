@@ -28,7 +28,6 @@ module.exports.deleteCardById = (req, res, next) => {
   const { _id } = req.user;
 
   Card.findById(cardId)
-    // .orFail(new NotFoundError('Такой карточки нет'))
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Такой карточки нет');
@@ -39,12 +38,7 @@ module.exports.deleteCardById = (req, res, next) => {
       return Card.findByIdAndRemove(cardId)
         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
-    .catch((err) => {
-      // if (err.name === 'CastError') {
-      //   return next(new BadRequestError('Некорректный _id карточки'));
-      // }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.likeCard = (req, res, next) => {

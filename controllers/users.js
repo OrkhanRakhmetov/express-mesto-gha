@@ -21,7 +21,7 @@ module.exports.getUserById = (req, res, next) => {
 
 // Создайте контроллер и роут для получения информации о пользователе
 module.exports.getUserInfo = (req, res, next) => {
-  const { userId } = req.user;
+  const { userId } = req.user._id;
   User.findById(userId)
     .then((user) => res.send(user))
     .catch(next);

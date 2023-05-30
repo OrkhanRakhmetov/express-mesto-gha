@@ -46,10 +46,10 @@ module.exports.createUser = (req, res, next) => {
         // return;
       }
       if (err.name === 'ValidationError') {
-        // next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
-        // return;
-        const message = Object.values(err.errors).map((error) => error.message).join('; ');
-        next(new BadRequestError(message));
+        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+        return;
+      //   const message = Object.values(err.errors).map((error) => error.message).join('; ');
+      //   next(new BadRequestError(message));
       }
       next(err);
     });

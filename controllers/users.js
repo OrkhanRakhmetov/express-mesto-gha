@@ -21,7 +21,8 @@ module.exports.getUserById = (req, res, next) => {
 
 // Создайте контроллер и роут для получения информации о пользователе
 module.exports.getUserInfo = (req, res, next) => {
-  User.findById(req.params.userId)
+  const userId = req.user._id;
+  User.findById(userId)
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -48,8 +49,6 @@ module.exports.createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
         return;
-      //   const message = Object.values(err.errors).map((error) => error.message).join('; ');
-      //   next(new BadRequestError(message));
       }
       next(err);
     });

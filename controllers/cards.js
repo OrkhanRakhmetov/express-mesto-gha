@@ -28,7 +28,7 @@ module.exports.deleteCardById = (req, res, next) => {
   const { _id } = req.user;
 
   Card.findById(cardId)
-    .orFail(new NotFoundError('Такой карточки нет'))
+    // .orFail(new NotFoundError('Такой карточки нет'))
     .then((card) => {
       if (card.owner.toString() !== _id) {
         throw new ForbiddenError('Нельзя удалять карточки');
@@ -37,9 +37,10 @@ module.exports.deleteCardById = (req, res, next) => {
         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
     .catch((err) => {
-      // if (err.name === 'DocumentNotFoundError') {
-      //   return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
-      // }
+      if (err.name === 'DocumentNotFoundError') {
+        // return res.status(NOT_FOUND).send({ message: 'Такой карточки нет' });
+        return next(new NotFoundError('Такой карточки нет'));
+      }
       if (err.name === 'CastError') {
         return next(new BadRequestError('Некорректный _id карточки'));
       }

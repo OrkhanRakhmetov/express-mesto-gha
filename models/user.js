@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Не передан пароль пользователя'],
-    minlength: 6,
     select: false,
   },
   name: {

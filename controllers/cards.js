@@ -35,10 +35,10 @@ module.exports.deleteCardById = (req, res, next) => {
       if (card.owner.toString() !== _id) {
         throw new ForbiddenError('Нельзя удалять карточки');
       }
-      // return Card.findByIdAndRemove(cardId)
-      //   .then(() => res.status(200).send({ message: 'Карточка удалена' }));
       return Card.deleteOne(cardId)
         .then(() => res.status(200).send({ message: 'Карточка удалена' }));
+    //   return Card.deleteOne(cardId)
+    //     .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
     .catch(next);
 };
